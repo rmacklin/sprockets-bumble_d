@@ -171,6 +171,75 @@ export default 42;
         new_transformer(root_dir: File.expand_path(__dir__))
       end
 
+      def test_cache_key
+        cache_key = new_transformer(presets: ['es2015']).cache_key
+        same_opts_transformer = new_transformer(presets: ['es2015'])
+        assert_equal cache_key, same_opts_transformer.cache_key
+
+        other_opts_transformer = new_transformer(presets: ['es2016'])
+        refute_equal cache_key, other_opts_transformer.cache_key
+      end
+
+      def test_cache_key_from_input
+        input = {
+          content_type: 'application/ecmascript-6',
+          data: 'const square = (n) => n * n',
+          metadata: {},
+          load_path: File.expand_path('../foo', __FILE__),
+          filename: File.expand_path('../foo/bar.es6', __FILE__),
+          cache: Sprockets::Cache.new
+        }
+
+        transformer_options = { presets: ['es2015'] }
+        transformer = new_transformer(transformer_options)
+
+        cache_key = transformer.cache_key_from_input(input)
+        assert_equal cache_key, transformer.cache_key_from_input(input.dup)
+
+        other_data = 'const square = (x) => x * x'
+        cache_key_from_other_data =
+          transformer.cache_key_from_input(input.merge(data: other_data))
+        refute_equal cache_key, cache_key_from_other_data
+
+        cache_key_from_other_filename =
+          transformer.cache_key_from_input(input.merge(filename: 'x'))
+        refute_equal cache_key, cache_key_from_other_filename
+
+        cache_key_from_same_transformer_opts =
+          new_transformer(transformer_options).cache_key_from_input(input)
+        assert_equal cache_key, cache_key_from_same_transformer_opts
+
+        cache_key_from_other_transformer_opts =
+          new_transformer(presets: ['es2016']).cache_key_from_input(input)
+        refute_equal cache_key, cache_key_from_other_transformer_opts
+      end
+
+      def test_cache_works
+        input = {
+          content_type: 'application/ecmascript-6',
+          data: 'const square = (n) => n * n',
+          metadata: {},
+          load_path: File.expand_path('../foo', __FILE__),
+          filename: File.expand_path('../foo/bar.es6', __FILE__),
+          cache: Sprockets::Cache.new
+        }
+
+        transformer = new_transformer(presets: ['es2015'])
+        transformer.expects(:cache_key_from_input).with(input).returns('cache_key').twice
+
+        mock_result = { 'code' => 'transformed' }
+        transformer.expects(:babel).returns(mock(transform: mock_result)).once
+
+        expected_output = { data: 'transformed' }
+        assert_equal expected_output, transformer.call(input)
+        assert_equal expected_output, transformer.call(input)
+
+        transformer.expects(:cache_key_from_input).with(input).returns('new_key')
+
+        transformer.expects(:babel).returns(mock(transform: mock_result)).once
+        assert_equal expected_output, transformer.call(input)
+      end
+
       private
 
       def new_transformer(options)
