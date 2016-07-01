@@ -8,6 +8,10 @@ module Sprockets
 
       def initialize
         @globals_map = {}.freeze
+        @babel_options = {
+          presets: ['es2015'],
+          plugins: ['external-helpers']
+        }
       end
 
       def configure

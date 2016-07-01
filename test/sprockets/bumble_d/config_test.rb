@@ -44,8 +44,13 @@ module Sprockets
       def test_configure
         config = Sprockets::BumbleD::Config.new
 
+        default_babel_options = {
+          presets: ['es2015'],
+          plugins: ['external-helpers']
+        }
+
         assert_nil config.root_dir
-        assert_nil config.babel_options
+        assert_equal default_babel_options, config.babel_options
 
         custom_babel_options = {
           presets: ['es2015', 'react'],
