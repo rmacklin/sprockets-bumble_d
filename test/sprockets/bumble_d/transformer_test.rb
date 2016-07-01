@@ -159,6 +159,18 @@ export default 42;
         assert_equal expected, es6_transformer.call(input)[:data]
       end
 
+      def test_root_dir_must_be_a_directory
+        assert_raises(RootDirectoryDoesNotExistError) do
+          new_transformer(root_dir: nil)
+        end
+
+        assert_raises(RootDirectoryDoesNotExistError) do
+          new_transformer(root_dir: __FILE__)
+        end
+
+        new_transformer(root_dir: File.expand_path(__dir__))
+      end
+
       private
 
       def new_transformer(options)

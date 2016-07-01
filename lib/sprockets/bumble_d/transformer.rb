@@ -1,5 +1,6 @@
 require 'schmooze/base'
 require 'sprockets/path_utils'
+require 'sprockets/bumble_d/errors'
 
 module Sprockets
   module BumbleD
@@ -10,10 +11,19 @@ module Sprockets
         method :transform, 'babel.transform'
       end
 
+      # rubocop:disable Style/GuardClause
       def initialize(options)
         @options = options.dup
         @root_dir = @options.delete(:root_dir)
+
+        unless @root_dir && File.directory?(@root_dir)
+          error_message =
+            'You must provide the `root_dir` directory from which ' \
+            'node modules are to be resolved'
+          raise RootDirectoryDoesNotExistError, error_message
+        end
       end
+      # rubocop:enable Style/GuardClause
 
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def call(input)
