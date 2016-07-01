@@ -1,0 +1,11 @@
+AllCops:
+  Exclude:
+    - bin/*
+    - Rakefile
+    - test/test_apps/**/*
+
+Style/Documentation:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
