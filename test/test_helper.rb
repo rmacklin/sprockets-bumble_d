@@ -2,6 +2,7 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'sprockets/bumble_d'
 
 require 'minitest/autorun'
+require 'mocha/setup'
 
 # This require is necessary because ActiveSupport (pulled in by requiring
 # railties) redefines to_json to call ActiveSupport::JSON.encode(self, options)
