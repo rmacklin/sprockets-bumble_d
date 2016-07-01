@@ -20,4 +20,6 @@ Gem::Specification.new do |spec|
 
   spec.files         = Dir['{lib}/**/*']
   spec.require_paths = ['lib']
+
+  spec.add_dependency 'sprockets', '~> 3.5'
 end
