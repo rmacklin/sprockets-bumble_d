@@ -10,6 +10,10 @@ module Sprockets
         @globals_map = {}.freeze
       end
 
+      def configure
+        yield self
+      end
+
       def register_globals(globals_map)
         duplicate_keys = @globals_map.keys & globals_map.keys
         unless duplicate_keys.empty?

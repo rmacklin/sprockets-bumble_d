@@ -40,6 +40,26 @@ module Sprockets
 
         assert_equal 'Duplicate keys registered: ["foo", "bob"]', error.message
       end
+
+      def test_configure
+        config = Sprockets::BumbleD::Config.new
+
+        assert_nil config.root_dir
+        assert_nil config.babel_options
+
+        custom_babel_options = {
+          presets: ['es2015', 'react'],
+          plugins: ['external-helpers', 'custom-plugin']
+        }
+
+        config.configure do |c|
+          c.root_dir = File.expand_path(__dir__)
+          c.babel_options = custom_babel_options
+        end
+
+        assert_equal File.expand_path(__dir__), config.root_dir
+        assert_equal custom_babel_options, config.babel_options
+      end
     end
   end
 end
