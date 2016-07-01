@@ -1,0 +1,11 @@
+language: ruby
+
+rvm:
+ - 2.2.4
+
+before_install:
+ - nvm install 6
+ - nvm use 6
+
+script:
+ - ./script/cibuild
