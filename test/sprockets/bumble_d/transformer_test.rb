@@ -178,6 +178,9 @@ export default 42;
 
         other_opts_transformer = new_transformer(presets: ['es2016'])
         refute_equal cache_key, other_opts_transformer.cache_key
+
+        higher_version_transformer = new_transformer(babel_config_version: 2)
+        refute_equal cache_key, higher_version_transformer.cache_key
       end
 
       def test_cache_key_from_input
@@ -212,6 +215,10 @@ export default 42;
         cache_key_from_other_transformer_opts =
           new_transformer(presets: ['es2016']).cache_key_from_input(input)
         refute_equal cache_key, cache_key_from_other_transformer_opts
+
+        cache_key_from_higher_version =
+          new_transformer(babel_config_version: 2).cache_key_from_input(input)
+        refute_equal cache_key, cache_key_from_higher_version
       end
 
       def test_cache_works
@@ -243,7 +250,10 @@ export default 42;
       private
 
       def new_transformer(options)
-        default_options = { root_dir: File.expand_path(__dir__) }
+        default_options = {
+          root_dir: File.expand_path(__dir__),
+          babel_config_version: 1
+        }
         Transformer.new(default_options.merge(options))
       end
     end

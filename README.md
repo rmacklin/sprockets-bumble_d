@@ -52,6 +52,7 @@ extend Sprockets::BumbleD::DSL
 
 configure_sprockets_bumble_d do |config|
   config.root_dir = File.expand_path('..', __dir__)
+  config.babel_config_version = 1
 end
 ```
 
@@ -79,6 +80,7 @@ For example:
 ```ruby
 configure_sprockets_bumble_d do |config|
   config.root_dir = File.expand_path('..', __dir__)
+  config.babel_config_version = 2
   config.babel_options = {
     presets: ['es2015', 'react'],
     plugins: ['external-helpers', 'custom-plugin']
@@ -88,12 +90,25 @@ end
 
 You can specify any options that are allowed in a `.babelrc` file.
 
+### The `babel_config_version` setting
+
+What's this mysterious `babel_config_version` we're setting in the previous
+examples? Good question. Essentially this is intended to be a value that
+translates to the composite version of babel-core and each babel preset
+and plugin in your application. It's used to expire the cache for compiled
+assets: since different versions of babel and its plugins can result in a
+different transpiled output, we want to be able to invalidate the cache
+whenever we change our babel configuration. So, when you upgrade babel-core
+or you add/remove/upgrade a babel plugin or preset, you'd increment this
+version which will cause the Sprockets transformer's cache key to change.
+
 ### Philosophy
 
 You should own your babel setup. We want to be able to use the latest versions
 of babel and its plugins as soon as they're available, so this gem doesn't
 vendor any node modules - it's up to the application to provide those to the
-gem. This is what the `root_dir` config is for.
+gem. This is what the `root_dir` config is for. It's also why the
+`babel_config_version` setting exists.
 
 ### Registering globals
 

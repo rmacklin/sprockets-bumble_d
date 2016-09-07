@@ -3,7 +3,7 @@ require 'sprockets/bumble_d/errors'
 module Sprockets
   module BumbleD
     class Config
-      attr_accessor :babel_options, :root_dir
+      attr_accessor :babel_options, :babel_config_version, :root_dir
       attr_reader :globals_map
 
       def initialize

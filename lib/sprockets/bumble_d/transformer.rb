@@ -18,6 +18,7 @@ module Sprockets
       def initialize(options)
         @options = options.dup
         @root_dir = @options.delete(:root_dir)
+        babel_config_version = @options.delete(:babel_config_version)
 
         unless @root_dir && File.directory?(@root_dir)
           error_message =
@@ -29,6 +30,7 @@ module Sprockets
         @cache_key = [
           self.class.name,
           VERSION,
+          babel_config_version,
           @options
         ].freeze
       end

@@ -13,6 +13,7 @@ module Sprockets
       initializer 'sprockets-bumble_d.configure_transformer' do |app|
         bumble_d_config = app.config.sprockets_bumble_d
         root_dir = bumble_d_config.root_dir
+        babel_config_version = bumble_d_config.babel_config_version
         babel_plugins = bumble_d_config.babel_options[:plugins]
 
         options = bumble_d_config.babel_options.merge(
@@ -22,7 +23,8 @@ module Sprockets
               globals: bumble_d_config.globals_map
             }]
           ],
-          root_dir: root_dir
+          root_dir: root_dir,
+          babel_config_version: babel_config_version
         )
         es6_transformer = Transformer.new(options)
 
