@@ -12,3 +12,5 @@
 //
 
 //= require babel-external-helpers
+
+//= require main
