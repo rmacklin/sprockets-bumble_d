@@ -17,6 +17,8 @@ Bundler.require(*Rails.groups)
 
 module TestApp
   class Application < Rails::Application
+    extend Sprockets::BumbleD::DSL
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -28,5 +30,10 @@ module TestApp
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    configure_sprockets_bumble_d do |config|
+      config.root_dir = File.expand_path('..', __dir__)
+      config.babel_config_version = 1
+    end
   end
 end
