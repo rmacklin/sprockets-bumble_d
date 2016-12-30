@@ -1,6 +1,5 @@
 require 'sprockets/bumble_d/config'
 require 'sprockets/bumble_d/transformer'
-require 'sprockets/directive_processor'
 
 module Sprockets
   module BumbleD
@@ -9,7 +8,6 @@ module Sprockets
         config.sprockets_bumble_d = Config.new
       end
 
-      # rubocop:disable Metrics/BlockLength
       initializer 'sprockets-bumble_d.configure_transformer' do |app|
         bumble_d_config = app.config.sprockets_bumble_d
         root_dir = bumble_d_config.root_dir
@@ -28,22 +26,17 @@ module Sprockets
         )
         es6_transformer = Transformer.new(options)
 
-        Sprockets.register_mime_type(
-          'application/ecmascript-6',
-          extensions: ['.es6'],
-          charset: :unicode
-        )
-        Sprockets.register_transformer(
-          'application/ecmascript-6',
-          'application/javascript',
-          es6_transformer
-        )
-        Sprockets.register_preprocessor(
-          'application/ecmascript-6',
-          DirectiveProcessor.new(comments: ['//', ['/*', '*/']])
+        # Using the deprecated register_engine rather than register_mime_type
+        # and register_transformer because otherwise .es6 files that aren't
+        # in the precompile list will get unnecessarily compiled. See
+        # https://github.com/rails/sprockets/issues/384
+        Sprockets.register_engine(
+          '.es6',
+          es6_transformer,
+          mime_type: 'application/javascript',
+          silence_deprecation: true
         )
       end
-      # rubocop:enable Metrics/BlockLength
     end
   end
 end
