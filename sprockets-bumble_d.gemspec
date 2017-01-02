@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.files         = Dir['{lib}/**/*']
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'railties', '~> 4.2'
+  spec.add_dependency 'railties', ['>= 4.2.0', '< 6.0']
   spec.add_dependency 'schmooze', '0.1.6'
   spec.add_dependency 'sprockets', '~> 3.5'
 end
