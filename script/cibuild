@@ -13,8 +13,8 @@ date "+%H:%M:%S"
 # ensure dependencies are installed
 script/bootstrap
 
-# run tests
-script/test
-
 # run linter
 script/lint
+
+# run tests
+script/test
