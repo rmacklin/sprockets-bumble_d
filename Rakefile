@@ -31,6 +31,11 @@ namespace :test do
     t.test_files = FileList['test/sprockets/bumble_d/**/*_test.rb']
   end
 
+  desc 'Run integration tests on all test apps'
+  task :integration do
+    run_command_in_test_apps('bundle exec rake test')
+  end
+
   namespace :integration do
     desc 'Resolve and install dependencies for all test apps'
     task :install do
