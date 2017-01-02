@@ -10,6 +10,12 @@ def run_command_in_test_apps(command)
     specific_gemfile_env = Bundler.clean_env
     specific_gemfile_env['BUNDLE_GEMFILE'] = gemfile_path
 
+    puts '---------------------',
+         "Gemfile: #{gemfile_path}",
+         "Directory: #{test_app_path}",
+         "Command: '#{command}'",
+         '---------------------'
+
     Bundler.send(:with_env, specific_gemfile_env) do
       exit_status_was_zero = system("cd #{test_app_path} && #{command}")
       raise unless exit_status_was_zero
