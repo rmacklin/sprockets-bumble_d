@@ -22,5 +22,9 @@ module TestApp
       config.root_dir = File.expand_path('..', __dir__)
       config.babel_config_version = 1
     end
+
+    register_umd_globals :test_app,
+      'bar' => 'Bar',
+      'foo' => 'Foo'
   end
 end
