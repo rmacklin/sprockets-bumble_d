@@ -9,5 +9,8 @@ cd "$(dirname "$0")/.."
 echo "==> Installing gem dependencies..."
 bundle check || bundle install
 
-echo "==> Installing node modules for test suite..."
+echo "==> Installing node modules for unit tests..."
 cd test/sprockets/bumble_d && npm install
+
+echo "==> Installing all test app dependencies for integration tests..."
+bundle exec rake test:integration:install
