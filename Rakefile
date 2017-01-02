@@ -35,6 +35,7 @@ namespace :test do
     desc 'Resolve and install dependencies for all test apps'
     task :install do
       run_command_in_test_apps('bundle check || bundle install')
+      run_command_in_test_apps('npm install')
     end
   end
 end
