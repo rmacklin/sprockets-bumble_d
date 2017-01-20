@@ -50,6 +50,7 @@ module Sprockets
         }
 
         assert_nil config.root_dir
+        assert_equal true, config.transform_to_umd
         assert_equal default_babel_options, config.babel_options
 
         custom_babel_options = {
@@ -59,10 +60,12 @@ module Sprockets
 
         config.configure do |c|
           c.root_dir = File.expand_path(__dir__)
+          c.transform_to_umd = false
           c.babel_options = custom_babel_options
         end
 
         assert_equal File.expand_path(__dir__), config.root_dir
+        assert_equal false, config.transform_to_umd
         assert_equal custom_babel_options, config.babel_options
       end
     end
