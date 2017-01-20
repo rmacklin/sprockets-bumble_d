@@ -14,13 +14,17 @@ module Sprockets
         babel_config_version = bumble_d_config.babel_config_version
         babel_plugins = bumble_d_config.babel_options[:plugins]
 
-        options = bumble_d_config.babel_options.merge(
-          plugins: babel_plugins + [
+        if bumble_d_config.transform_to_umd
+          babel_plugins += [
             ['transform-es2015-modules-umd', {
               exactGlobals: true,
               globals: bumble_d_config.globals_map
             }]
-          ],
+          ]
+        end
+
+        options = bumble_d_config.babel_options.merge(
+          plugins: babel_plugins,
           root_dir: root_dir,
           babel_config_version: babel_config_version
         )
