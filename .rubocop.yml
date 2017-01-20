@@ -4,6 +4,9 @@ AllCops:
     - Rakefile
     - test/test_apps/**/*
 
+Metrics/LineLength:
+  Max: 90
+
 Style/Documentation:
   Enabled: false
 
