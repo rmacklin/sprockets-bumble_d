@@ -9,10 +9,16 @@ module Sprockets
       class BabelBridge < Schmooze::Base
         dependencies babel: 'babel-core'
 
+        method :resolvePlugin, 'babel.resolvePlugin'
+        method :resolvePreset, 'babel.resolvePreset'
         method :transform, 'babel.transform'
       end
 
       attr_reader :cache_key
+
+      # TODO: extract resolution logic
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity,
+      # rubocop:disable Metrics/PerceivedComplexity
 
       # rubocop:disable Metrics/MethodLength
       def initialize(options)
@@ -27,6 +33,26 @@ module Sprockets
           raise RootDirectoryDoesNotExistError, error_message
         end
 
+        if @options[:plugins].is_a?(Array)
+          @options[:plugins] = @options[:plugins].map do |plugin|
+            if plugin.is_a?(Array)
+              [babel.resolvePlugin(plugin[0]), plugin[1]]
+            else
+              babel.resolvePlugin(plugin)
+            end
+          end
+        end
+
+        if @options[:presets].is_a?(Array)
+          @options[:presets] = @options[:presets].map do |preset|
+            if preset.is_a?(Array)
+              [babel.resolvePreset(preset[0]), preset[1]]
+            else
+              babel.resolvePreset(preset)
+            end
+          end
+        end
+
         @cache_key = [
           self.class.name,
           VERSION,
@@ -35,6 +61,9 @@ module Sprockets
         ].freeze
       end
       # rubocop:enable Metrics/MethodLength
+
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity,
+      # rubocop:enable Metrics/PerceivedComplexity
 
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def call(input)
