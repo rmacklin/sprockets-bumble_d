@@ -160,6 +160,53 @@ export default 42;
         assert_equal expected, es6_transformer.call(input)[:data]
       end
 
+      def test_it_can_compile_to_another_module_format
+        es6_module = <<-JS.strip
+import foo from 'foo/module';
+import bar from 'bar/module';
+
+export default 42;
+        JS
+
+        input = {
+          content_type: 'application/ecmascript-6',
+          data: es6_module,
+          metadata: {},
+          load_path: File.expand_path('../some/dir', __FILE__),
+          filename: File.expand_path('../some/dir/mod.es6', __FILE__),
+          cache: Sprockets::Cache.new,
+          name: 'some/dir/mod'
+        }
+
+        babel_options = {
+          presets: ['es2015'],
+          plugins: [
+            'external-helpers',
+            'transform-es2015-modules-amd'
+          ]
+        }
+
+        es6_transformer = new_transformer(babel_options)
+
+        expected = <<-JS.strip
+define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (exports, _module, _module3) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _module2 = babelHelpers.interopRequireDefault(_module);
+
+  var _module4 = babelHelpers.interopRequireDefault(_module3);
+
+  exports.default = 42;
+});
+        JS
+
+        assert_equal expected, es6_transformer.call(input)[:data]
+      end
+
       def test_root_dir_must_be_a_directory
         assert_raises(RootDirectoryDoesNotExistError) do
           new_transformer(root_dir: nil)
