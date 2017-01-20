@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+
+Pass babel plugins and presets as absolute paths so that they can be found even when transpiling files outside the package.json subtree
+
+This relies on methods introduced in babel-core 6.22.0 (https://github.com/babel/babel/pull/4729)
+
 ## 0.3.0
 
 Support rails 5
