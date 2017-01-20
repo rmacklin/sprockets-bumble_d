@@ -7,8 +7,33 @@ class AssetCompilationTest < Minitest::Test
     assert_equal EXPECTED_OUTPUT, File.read(compiled_main_js_file)
   end
 
-  MAIN_JS_DIGEST = '4e9dc3128cbfb0e86b21cae6c5d846a3574e7e1e088e6e630d8200694e7868a4'
+  MAIN_JS_DIGEST = '2a32fe576c8f03a4e216ace40a4d865ffc4d261b34db852cb5d7e8cc115b4b78'
   EXPECTED_OUTPUT = <<-JS
+(function (global, factory) {
+  if (typeof define === "function" && define.amd) {
+    define("test_engine/qux", ["exports"], factory);
+  } else if (typeof exports !== "undefined") {
+    factory(exports);
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports);
+    global.TestEngine = global.TestEngine || {};
+    global.TestEngine.Qux = mod.exports;
+  }
+})(this, function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  function Qux(config) {
+    this.config = config;
+  }
+
+  exports.default = Qux;
+});
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
     define("foo", ["exports"], factory);
@@ -63,12 +88,16 @@ class AssetCompilationTest < Minitest::Test
 
 
 
-(function(Foo, Bar) {
+
+
+(function(Foo, Bar, Qux) {
   Foo = Foo.default;
   Bar = Bar.default;
+  Qux = Qux.default;
 
   console.log(new Bar().foo.number);
   console.log(new Foo().number);
-})(Foo, Bar);
+  console.log(new Qux({a: 1}).config.a);
+})(Foo, Bar, TestEngine.Qux);
   JS
 end
