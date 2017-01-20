@@ -77,9 +77,10 @@ and
 If you want to customize this with different plugins and presets, specify them
 in the `configure_sprockets_bumble_d` block with the `babel_options` setting.
 Note that (because it's central to the purpose of this gem)
-babel-plugin-transform-es2015-modules-umd is _always_ included for you and set
-to use the [registered globals](#registering-globals), so this plugin does not
-need to be specified when you override the default plugins.
+babel-plugin-transform-es2015-modules-umd is _always_ included for you (unless
+you [set `transform_to_umd` to `false`](#do-i-have-to-transpile-to-umd-modules))
+and configured to use the [registered globals](#registering-globals), so this
+plugin does not need to be specified when you override the default plugins.
 
 For example:
 ```ruby
@@ -191,9 +192,36 @@ application) where the module lives, `register_umd_globals` will raise
 registered a second time. Of course, this still can't prevent you from
 registering globals (that had not already been registered) in the wrong engine.
 
-
 ### Reminder about Rails reloading
 
 As with any `config` changes, updates to the globals registry are not
 reloaded automatically; you must restart your server for the changes to take
 effect.
+
+### Do I have to transpile to UMD modules?
+
+No, you can transpile to other module formats (e.g. AMD). You'd just be using
+less of this gem's API surface area <sup>1</sup>. You can set `transform_to_umd` to
+`false` in your `configure_sprockets_bumble_d` block, and
+[override the default plugins](#customizing-your-babel-options) to use a
+different module transform. For example if you're using an AMD loader like
+[almond](https://github.com/requirejs/almond), you could configure modules to
+be transpiled to AMD like so:
+
+```rb
+configure_sprockets_bumble_d do |config|
+  config.root_dir = File.expand_path('..', __dir__)
+  config.babel_config_version = 1
+  config.transform_to_umd = false
+  config.babel_options = {
+    presets: ['es2015'],
+    plugins: ['external-helpers', 'transform-es2015-modules-amd']
+  }
+end
+```
+
+You can reference the [5.0_amd test app](./test/test_apps/5.0_amd) which
+demonstrates this in a full application.
+
+<sup><sup>1</sup> Of course if you're doing this, you wouldn't ever call
+`register_umd_globals`</sup>
