@@ -37,6 +37,11 @@ run `bundle install`.
 to install the modules for the default babel config. If you want to
 [customize the babel options](#customizing-your-babel-options), install any
 additional plugins and presets you want.
+  - **Note:** Sprockets::BumbleD requires babel-core version 6.22.0 or higher.
+    This is because it can be used to transpile assets provided by a gem (e.g.
+    a rails plugin), and those assets would exist outside your application
+    subtree (they'd exist where your gems are globally installed), so we rely
+    on the `resolvePlugin` and `resolvePreset` methods introduced in [PR #4729](https://github.com/babel/babel/pull/4729).
 3. Generate the [external helpers](https://babeljs.io/docs/plugins/external-helpers/)
 and `//= require` them in at the beginning of your application manifest or
 pull them in with a separate script tag. This step is of course unnecessary if
