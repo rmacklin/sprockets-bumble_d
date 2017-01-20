@@ -1,0 +1,1 @@
+../../../../shared/app/assets/javascripts/foo.es6

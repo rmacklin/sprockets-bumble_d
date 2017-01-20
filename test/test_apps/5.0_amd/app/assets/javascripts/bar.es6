@@ -1,0 +1,1 @@
+../../../../shared/app/assets/javascripts/bar.es6
