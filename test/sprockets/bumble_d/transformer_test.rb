@@ -1,6 +1,7 @@
 require 'test_helper'
 
 require 'sprockets/cache'
+require 'sprockets/bumble_d/resolver'
 require 'sprockets/bumble_d/transformer'
 
 module Sprockets
@@ -245,6 +246,34 @@ export default 42;
 
         transformer.expects(:babel).returns(mock(transform: mock_result)).once
         assert_equal expected_output, transformer.call(input)
+      end
+
+      def test_it_resolves_plugin_arrays
+        plugins = nil
+
+        Resolver.any_instance.expects(:resolve_plugins).never
+        new_transformer(plugins: plugins)
+
+        plugins = 'external-helpers'
+        new_transformer(plugins: plugins)
+
+        plugins = ['external-helpers']
+        Resolver.any_instance.expects(:resolve_plugins).with(plugins).once
+        new_transformer(plugins: plugins)
+      end
+
+      def test_it_resolves_preset_arrays
+        presets = nil
+
+        Resolver.any_instance.expects(:resolve_presets).never
+        new_transformer(presets: presets)
+
+        presets = 'es2015'
+        new_transformer(presets: presets)
+
+        presets = ['es2015']
+        Resolver.any_instance.expects(:resolve_presets).with(presets).once
+        new_transformer(presets: presets)
       end
 
       private

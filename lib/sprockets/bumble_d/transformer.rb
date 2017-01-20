@@ -1,6 +1,7 @@
 require 'schmooze/base'
 require 'sprockets/path_utils'
 require 'sprockets/bumble_d/errors'
+require 'sprockets/bumble_d/resolver'
 require 'sprockets/bumble_d/version'
 
 module Sprockets
@@ -16,11 +17,7 @@ module Sprockets
 
       attr_reader :cache_key
 
-      # TODO: extract resolution logic
-      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity,
-      # rubocop:disable Metrics/PerceivedComplexity
-
-      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def initialize(options)
         @options = options.dup
         @root_dir = @options.delete(:root_dir)
@@ -33,25 +30,11 @@ module Sprockets
           raise RootDirectoryDoesNotExistError, error_message
         end
 
-        if @options[:plugins].is_a?(Array)
-          @options[:plugins] = @options[:plugins].map do |plugin|
-            if plugin.is_a?(Array)
-              [babel.resolvePlugin(plugin[0]), plugin[1]]
-            else
-              babel.resolvePlugin(plugin)
-            end
-          end
-        end
-
-        if @options[:presets].is_a?(Array)
-          @options[:presets] = @options[:presets].map do |preset|
-            if preset.is_a?(Array)
-              [babel.resolvePreset(preset[0]), preset[1]]
-            else
-              babel.resolvePreset(preset)
-            end
-          end
-        end
+        resolver = Resolver.new(babel)
+        plugins = @options[:plugins]
+        presets = @options[:presets]
+        @options[:plugins] = resolver.resolve_plugins(plugins) if plugins.is_a?(Array)
+        @options[:presets] = resolver.resolve_presets(presets) if presets.is_a?(Array)
 
         @cache_key = [
           self.class.name,
@@ -60,10 +43,7 @@ module Sprockets
           @options
         ].freeze
       end
-      # rubocop:enable Metrics/MethodLength
-
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity,
-      # rubocop:enable Metrics/PerceivedComplexity
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def call(input)
