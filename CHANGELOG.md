@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+Support transforming to other module formats by adding `transform_to_umd` flag
+
 ## 0.4.0
 
 Pass babel plugins and presets as absolute paths so that they can be found even when transpiling files outside the package.json subtree
