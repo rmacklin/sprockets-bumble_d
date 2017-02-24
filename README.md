@@ -41,7 +41,7 @@ additional plugins and presets you want.
     This is because it can be used to transpile assets provided by a gem (e.g.
     a rails plugin), and those assets would exist outside your application
     subtree (they'd exist where your gems are globally installed), so we rely
-    on the `resolvePlugin` and `resolvePreset` methods introduced in [PR #4729](https://github.com/babel/babel/pull/4729).
+    on the `resolvePlugin` and `resolvePreset` methods introduced in [babel PR #4729](https://github.com/babel/babel/pull/4729).
 3. Generate the [external helpers](https://babeljs.io/docs/plugins/external-helpers/)
 and `//= require` them in at the beginning of your application manifest or
 pull them in with a separate script tag. This step is of course unnecessary if
@@ -123,7 +123,7 @@ As of version 6.12.0, babel-plugin-transform-es2015-modules-umd includes an
 statements into the global reference it should resolve to. It also lets you
 specify what global should be exported by an ES6 module in the resultant UMD
 output. (A complete description is available in
-[this PR](https://github.com/babel/babel/pull/3534)). If you're using an older
+[babel PR #3534](https://github.com/babel/babel/pull/3534)). If you're using an older
 version of the plugin, upgrade to at least 6.12.0 to get the full value of this
 gem and registering globals.
 
