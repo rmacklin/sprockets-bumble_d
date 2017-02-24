@@ -172,7 +172,7 @@ global.Her.Cool.Tool = mod.exports;
 
 If you have a large application, you may have split it into multiple inline
 rails engines (as described
-[in this talk](https://www.youtube.com/watch?v=-54SDanDC00)). Inline engines
+in [this talk](https://www.youtube.com/watch?v=-54SDanDC00)). Inline engines
 with their own assets should own the registration of globals for these assets.
 This is supported in Sprockets::BumbleD:
 
