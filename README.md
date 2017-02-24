@@ -23,8 +23,10 @@ plain old global-dependent scripts).
 
 Sprockets::BumbleD provides this with a Sprockets transformer that acts on
 `.es6` files. These files are transpiled by Babel and the
-[ES2015 -> UMD modules transform](https://github.com/babel/babel/tree/v6.12.0/packages/babel-plugin-transform-es2015-modules-umd)
-plugin, preserving any globals that you've [registered](#registering-globals).
+[ES2015 -> UMD modules transform] plugin, preserving any globals that you've
+[registered](#registering-globals).
+
+[ES2015 -> UMD modules transform]: https://github.com/babel/babel/tree/v6.12.0/packages/babel-plugin-transform-es2015-modules-umd
 
 ## Setup
 
@@ -41,13 +43,16 @@ additional plugins and presets you want.
     This is because it can be used to transpile assets provided by a gem (e.g.
     a rails plugin), and those assets would exist outside your application
     subtree (they'd exist where your gems are globally installed), so we rely
-    on the `resolvePlugin` and `resolvePreset` methods introduced in [babel PR #4729](https://github.com/babel/babel/pull/4729).
-3. Generate the [external helpers](https://babeljs.io/docs/plugins/external-helpers/)
-and `//= require` them in at the beginning of your application manifest or
-pull them in with a separate script tag. This step is of course unnecessary if
-you won't be using the external-helpers plugin, but it's highly recommended
-that you do (to avoid inlining them everywhere, which unnecessarily bloats the
-bundle sent to the browser).
+    on the `resolvePlugin` and `resolvePreset` methods introduced in
+    [babel PR #4729].
+3. Generate the [external helpers] and `//= require` them in at the beginning
+of your application manifest or pull them in with a separate script tag. This
+step is of course unnecessary if you won't be using the external-helpers
+plugin, but it's highly recommended that you do (to avoid inlining them
+everywhere, which unnecessarily bloats the bundle sent to the browser).
+
+[babel PR #4729]: https://github.com/babel/babel/pull/4729
+[external helpers]: https://babeljs.io/docs/plugins/external-helpers
 
 ### Basic configuration
 
@@ -69,18 +74,19 @@ as its node `require` statements will resolve from that directory.
 
 ### Customizing your babel options
 
-By default you get
-[babel-preset-es2015](https://babeljs.io/docs/plugins/preset-es2015/),
-[babel-plugin-external-helpers](https://babeljs.io/docs/plugins/external-helpers/),
-and
-[babel-plugin-transform-es2015-modules-umd](https://babeljs.io/docs/plugins/transform-es2015-modules-umd/).
-If you want to customize this with different plugins and presets, specify them
-in the `configure_sprockets_bumble_d` block with the `babel_options` setting.
-Note that (because it's central to the purpose of this gem)
+By default you get [babel-preset-es2015], [babel-plugin-external-helpers], and
+[babel-plugin-transform-es2015-modules-umd]. If you want to customize this with
+different plugins and presets, specify them in the
+`configure_sprockets_bumble_d` block with the `babel_options` setting. Note
+that (because it's central to the purpose of this gem)
 babel-plugin-transform-es2015-modules-umd is _always_ included for you (unless
 you [set `transform_to_umd` to `false`](#do-i-have-to-transpile-to-umd-modules))
 and configured to use the [registered globals](#registering-globals), so this
 plugin does not need to be specified when you override the default plugins.
+
+[babel-preset-es2015]: https://babeljs.io/docs/plugins/preset-es2015
+[babel-plugin-external-helpers]: https://babeljs.io/docs/plugins/external-helpers/
+[babel-plugin-transform-es2015-modules-umd]: https://babeljs.io/docs/plugins/transform-es2015-modules-umd
 
 For example:
 ```ruby
@@ -122,10 +128,11 @@ As of version 6.12.0, babel-plugin-transform-es2015-modules-umd includes an
 `exactGlobals` option that lets you specify exactly how to transpile any import
 statements into the global reference it should resolve to. It also lets you
 specify what global should be exported by an ES6 module in the resultant UMD
-output. (A complete description is available in
-[babel PR #3534](https://github.com/babel/babel/pull/3534)). If you're using an older
-version of the plugin, upgrade to at least 6.12.0 to get the full value of this
-gem and registering globals.
+output. (A complete description is available in [babel PR #3534]). If you're
+using an older version of the plugin, upgrade to at least 6.12.0 to get the
+full value of this gem and registering globals.
+
+[babel PR #3534]: (https://github.com/babel/babel/pull/3534)
 
 In `config/application.rb`, after `extend Sprockets::BumbleD::DSL`:
 ```ruby
@@ -171,10 +178,11 @@ global.Her.Cool.Tool = mod.exports;
 #### Inline Rails engines
 
 If you have a large application, you may have split it into multiple inline
-rails engines (as described
-in [this talk](https://www.youtube.com/watch?v=-54SDanDC00)). Inline engines
-with their own assets should own the registration of globals for these assets.
-This is supported in Sprockets::BumbleD:
+rails engines (as described in [this talk]). Inline engines with their own
+assets should own the registration of globals for these assets. This is
+supported in Sprockets::BumbleD:
+
+[this talk]: https://www.youtube.com/watch?v=-54SDanDC00
 
 in `some_engine/engine.rb`:
 ```ruby
@@ -205,8 +213,9 @@ less of this gem's API surface area <sup>1</sup>. You can set `transform_to_umd`
 `false` in your `configure_sprockets_bumble_d` block, and
 [override the default plugins](#customizing-your-babel-options) to use a
 different module transform. For example if you're using an AMD loader like
-[almond](https://github.com/requirejs/almond), you could configure modules to
-be transpiled to AMD like so:
+[almond], you could configure modules to be transpiled to AMD like so:
+
+[almond]: https://github.com/requirejs/almond
 
 ```rb
 configure_sprockets_bumble_d do |config|
