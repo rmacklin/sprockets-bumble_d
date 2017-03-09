@@ -8,14 +8,7 @@ module Sprockets
   module BumbleD
     class TransformerTest < Minitest::Test
       def test_it_compiles_es6_features_to_es5
-        input = {
-          content_type: 'application/ecmascript-6',
-          data: 'const square = (n) => n * n',
-          metadata: {},
-          load_path: File.expand_path('../foo', __FILE__),
-          filename: File.expand_path('../foo/bar.es6', __FILE__),
-          cache: Sprockets::Cache.new
-        }
+        input = input_exemplar
 
         es6_transformer = new_transformer(presets: ['es2015'])
 
@@ -38,15 +31,12 @@ import bar from 'bar/module';
 export default 42;
         JS
 
-        input = {
-          content_type: 'application/ecmascript-6',
+        input = input_exemplar(
           data: es6_module,
-          metadata: {},
           load_path: File.expand_path('../some/dir', __FILE__),
           filename: File.expand_path('../some/dir/mod.es6', __FILE__),
-          cache: Sprockets::Cache.new,
           name: 'some/dir/mod'
-        }
+        )
 
         babel_options = {
           presets: ['es2015'],
@@ -103,15 +93,12 @@ import Tooltip from 'foo/ui/tooltip/module';
 export default 42;
         JS
 
-        input = {
-          content_type: 'application/ecmascript-6',
+        input = input_exemplar(
           data: es6_module,
-          metadata: {},
           load_path: File.expand_path('../some/dir', __FILE__),
           filename: File.expand_path('../some/dir/mod.es6', __FILE__),
-          cache: Sprockets::Cache.new,
           name: 'some/dir/mod'
-        }
+        )
 
         babel_options = {
           presets: ['es2015'],
@@ -168,15 +155,12 @@ import bar from 'bar/module';
 export default 42;
         JS
 
-        input = {
-          content_type: 'application/ecmascript-6',
+        input = input_exemplar(
           data: es6_module,
-          metadata: {},
           load_path: File.expand_path('../some/dir', __FILE__),
           filename: File.expand_path('../some/dir/mod.es6', __FILE__),
-          cache: Sprockets::Cache.new,
           name: 'some/dir/mod'
-        }
+        )
 
         babel_options = {
           presets: ['es2015'],
@@ -232,14 +216,7 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
       end
 
       def test_cache_key_from_input
-        input = {
-          content_type: 'application/ecmascript-6',
-          data: 'const square = (n) => n * n',
-          metadata: {},
-          load_path: File.expand_path('../foo', __FILE__),
-          filename: File.expand_path('../foo/bar.es6', __FILE__),
-          cache: Sprockets::Cache.new
-        }
+        input = input_exemplar
 
         transformer_options = { presets: ['es2015'] }
         transformer = new_transformer(transformer_options)
@@ -270,14 +247,7 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
       end
 
       def test_cache_works
-        input = {
-          content_type: 'application/ecmascript-6',
-          data: 'const square = (n) => n * n',
-          metadata: {},
-          load_path: File.expand_path('../foo', __FILE__),
-          filename: File.expand_path('../foo/bar.es6', __FILE__),
-          cache: Sprockets::Cache.new
-        }
+        input = input_exemplar
 
         transformer = new_transformer(presets: ['es2015'])
         transformer.expects(:cache_key_from_input).with(input).returns('cache_key').twice
@@ -331,6 +301,17 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
           babel_config_version: 1
         }
         Transformer.new(default_options.merge(options))
+      end
+
+      def input_exemplar(overrides = {})
+        {
+          content_type: 'application/ecmascript-6',
+          data:         'const square = (n) => n * n',
+          metadata:     {},
+          load_path:    File.expand_path('../foo', __FILE__),
+          filename:     File.expand_path('../foo/bar.es6', __FILE__),
+          cache:        Sprockets::Cache.new
+        }.merge(overrides)
       end
     end
   end
