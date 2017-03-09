@@ -17,7 +17,7 @@ module Sprockets
 
       attr_reader :cache_key
 
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      # rubocop:disable Metrics/MethodLength
       def initialize(options)
         @options = options.dup
         @root_dir = @options.delete(:root_dir)
@@ -30,12 +30,7 @@ module Sprockets
           raise RootDirectoryDoesNotExistError, error_message
         end
 
-        resolver = Resolver.new(babel)
-        plugins = @options[:plugins]
-        presets = @options[:presets]
-        @options[:plugins] = resolver.resolve_plugins(plugins) if plugins.is_a?(Array)
-        @options[:presets] = resolver.resolve_presets(presets) if presets.is_a?(Array)
-
+        @resolution_complete = false
         @cache_key = [
           self.class.name,
           VERSION,
@@ -43,7 +38,7 @@ module Sprockets
           @options
         ].freeze
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+      # rubocop:enable Metrics/MethodLength
 
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def call(input)
@@ -62,7 +57,7 @@ module Sprockets
             filename: input[:filename],
             filenameRelative: filename_relative,
             ast: false
-          }.merge(@options)
+          }.merge(options_with_resolved_plugins_and_presets)
 
           if options[:moduleIds] && options[:moduleRoot]
             options[:moduleId] ||= File.join(options[:moduleRoot], input[:name])
@@ -83,6 +78,20 @@ module Sprockets
 
       def babel
         @babel ||= BabelBridge.new(@root_dir)
+      end
+
+      private
+
+      def options_with_resolved_plugins_and_presets
+        unless @resolution_complete
+          resolver = Resolver.new(babel)
+          plugins = @options[:plugins]
+          presets = @options[:presets]
+          @options[:plugins] = resolver.resolve_plugins(plugins) if plugins.is_a?(Array)
+          @options[:presets] = resolver.resolve_presets(presets) if presets.is_a?(Array)
+          @resolution_complete = true
+        end
+        @options
       end
     end
   end

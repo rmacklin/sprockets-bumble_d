@@ -249,11 +249,14 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
       def test_cache_works
         input = input_exemplar
 
-        transformer = new_transformer(presets: ['es2015'])
+        presets = ['es2015']
+        transformer = new_transformer(presets: presets)
         transformer.expects(:cache_key_from_input).with(input).returns('cache_key').twice
 
         mock_result = { 'code' => 'transformed' }
-        transformer.expects(:babel).returns(mock(transform: mock_result)).once
+        babel_mock = mock(transform: mock_result)
+        babel_mock.expects(:resolvePreset).with(presets.first)
+        transformer.expects(:babel).returns(babel_mock).twice
 
         expected_output = { data: 'transformed' }
         assert_equal expected_output, transformer.call(input)
@@ -266,31 +269,40 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
       end
 
       def test_it_resolves_plugin_arrays
+        input = input_exemplar
         plugins = nil
 
         Resolver.any_instance.expects(:resolve_plugins).never
-        new_transformer(plugins: plugins)
+        transformer = new_transformer(plugins: plugins)
+        transformer.call(input)
 
         plugins = 'external-helpers'
-        new_transformer(plugins: plugins)
+        transformer = new_transformer(plugins: plugins)
+        transformer.call(input)
 
         plugins = ['external-helpers']
         Resolver.any_instance.expects(:resolve_plugins).with(plugins).once
-        new_transformer(plugins: plugins)
+        transformer = new_transformer(plugins: plugins)
+        transformer.call(input)
       end
 
       def test_it_resolves_preset_arrays
+        input = input_exemplar
+
         presets = nil
 
         Resolver.any_instance.expects(:resolve_presets).never
-        new_transformer(presets: presets)
+        transformer = new_transformer(presets: presets)
+        transformer.call(input)
 
         presets = 'es2015'
-        new_transformer(presets: presets)
+        transformer = new_transformer(presets: presets)
+        transformer.call(input)
 
         presets = ['es2015']
         Resolver.any_instance.expects(:resolve_presets).with(presets).once
-        new_transformer(presets: presets)
+        transformer = new_transformer(presets: presets)
+        transformer.call(input)
       end
 
       private
