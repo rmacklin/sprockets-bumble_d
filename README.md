@@ -234,3 +234,23 @@ demonstrates this in a full application.
 
 <sup><sup>1</sup> Of course if you're doing this, you wouldn't ever call
 `register_umd_globals`</sup>
+
+## Similar projects
+
+- [babel-schmooze-sprockets] - This takes a similar approach, but it requires
+  sprockets 4 (which is still in beta), and it doesn't offer a way to register
+  globals within inline engines. Additionally, it diverges in
+  [philosophy](#philosophy) by vendoring some node_modules.
+- [sprockets-es6] - This has been the common solution for ES6 transpilation in
+  sprockets for a while, but it takes a very different approach. Instead of
+  relying on node and the npm ecosystem, it uses [ruby-babel-transpiler], which
+  is stuck on babel 5. This means you cannot configure custom babel plugins
+  (which means you can't use `exactGlobals` to specify what it should transform
+  globals to in the UMD modules transform).
+- [sprockets 4] - This takes the same approach as sprockets-es6 so it suffers
+  from the same limitations as sprockets-es6
+
+[babel-schmooze-sprockets]: https://github.com/fnando/babel-schmooze-sprockets
+[ruby-babel-transpiler]: https://github.com/babel/ruby-babel-transpiler
+[sprockets-es6]: https://github.com/TannerRogalsky/sprockets-es6
+[sprockets 4]: https://github.com/rails/sprockets/tree/v4.0.0.beta4
