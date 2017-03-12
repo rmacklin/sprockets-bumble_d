@@ -268,7 +268,21 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
         assert_equal expected_output, transformer.call(input)
       end
 
-      def test_it_resolves_plugin_arrays
+      def test_it_instantiates_resolver_only_the_first_time_call_is_invoked
+        input = input_exemplar
+        resolver = Resolver.new(Transformer::BabelBridge.new(File.expand_path(__dir__)))
+        Resolver.expects(:new).never
+
+        transformer = new_transformer(presets: ['es2015'])
+
+        Resolver.expects(:new).returns(resolver).once
+
+        transformer.call(input)
+        other_input = input_exemplar(data: 'const foo = "bar"')
+        transformer.call(other_input)
+      end
+
+      def test_it_resolves_plugin_arrays_the_first_time_call_is_invoked
         input = input_exemplar
         Resolver.any_instance.expects(:resolve_plugins).never
 
@@ -285,9 +299,13 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
 
         Resolver.any_instance.expects(:resolve_plugins).with(plugins).once
         transformer.call(input)
+
+        Resolver.any_instance.expects(:resolve_plugins).never
+        other_input = input_exemplar(data: 'const foo = "bar"')
+        transformer.call(other_input)
       end
 
-      def test_it_resolves_preset_arrays
+      def test_it_resolves_preset_arrays_the_first_time_call_is_invoked
         input = input_exemplar
         Resolver.any_instance.expects(:resolve_presets).never
 
@@ -304,6 +322,10 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
 
         Resolver.any_instance.expects(:resolve_presets).with(presets).once
         transformer.call(input)
+
+        Resolver.any_instance.expects(:resolve_presets).never
+        other_input = input_exemplar(data: 'const foo = "bar"')
+        transformer.call(other_input)
       end
 
       private
