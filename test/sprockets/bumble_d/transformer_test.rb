@@ -281,8 +281,9 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
         transformer.call(input)
 
         plugins = ['external-helpers']
-        Resolver.any_instance.expects(:resolve_plugins).with(plugins).once
         transformer = new_transformer(plugins: plugins)
+
+        Resolver.any_instance.expects(:resolve_plugins).with(plugins).once
         transformer.call(input)
       end
 
@@ -299,8 +300,9 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
         transformer.call(input)
 
         presets = ['es2015']
-        Resolver.any_instance.expects(:resolve_presets).with(presets).once
         transformer = new_transformer(presets: presets)
+
+        Resolver.any_instance.expects(:resolve_presets).with(presets).once
         transformer.call(input)
       end
 
