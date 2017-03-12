@@ -270,9 +270,9 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
 
       def test_it_resolves_plugin_arrays
         input = input_exemplar
-        plugins = nil
-
         Resolver.any_instance.expects(:resolve_plugins).never
+
+        plugins = nil
         transformer = new_transformer(plugins: plugins)
         transformer.call(input)
 
@@ -288,10 +288,9 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
 
       def test_it_resolves_preset_arrays
         input = input_exemplar
+        Resolver.any_instance.expects(:resolve_presets).never
 
         presets = nil
-
-        Resolver.any_instance.expects(:resolve_presets).never
         transformer = new_transformer(presets: presets)
         transformer.call(input)
 
