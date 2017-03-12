@@ -8,3 +8,4 @@
 /tmp/
 Gemfile.lock
 node_modules
+test/test_apps/**/public/assets
