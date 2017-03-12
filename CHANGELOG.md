@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+Defer execution of babel plugin and preset resolution until the first time `Transformer#call` is invoked.
+
+This prevents an exception from being raised if the railtie is loaded before node modules have been installed.
+As long as the babel packages are installed before `call` is invoked, you're good to go.
+
 ## 1.0.0
 
 Support transforming to other module formats by adding `transform_to_umd` flag
