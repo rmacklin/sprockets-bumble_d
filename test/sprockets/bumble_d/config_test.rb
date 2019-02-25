@@ -45,8 +45,8 @@ module Sprockets
         config = Sprockets::BumbleD::Config.new
 
         default_babel_options = {
-          presets: ['es2015'],
-          plugins: ['external-helpers']
+          presets: ['@babel/preset-env'],
+          plugins: ['@babel/plugin-external-helpers']
         }
 
         assert_nil config.root_dir
@@ -54,8 +54,8 @@ module Sprockets
         assert_equal default_babel_options, config.babel_options
 
         custom_babel_options = {
-          presets: ['es2015', 'react'],
-          plugins: ['external-helpers', 'custom-plugin']
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+          plugins: ['@babel/plugin-external-helpers', 'custom-plugin']
         }
 
         config.configure do |c|

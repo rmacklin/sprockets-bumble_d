@@ -23,8 +23,8 @@ module TestApp
       config.babel_config_version = 1
       config.transform_to_umd = false
       config.babel_options = {
-        presets: ['es2015'],
-        plugins: ['external-helpers', 'transform-es2015-modules-amd']
+        presets: ['@babel/preset-env'],
+        plugins: ['@babel/plugin-external-helpers', '@babel/plugin-transform-modules-amd']
       }
     end
   end

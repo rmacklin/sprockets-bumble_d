@@ -16,7 +16,7 @@ module Sprockets
 
         if bumble_d_config.transform_to_umd
           babel_plugins += [
-            ['transform-es2015-modules-umd', {
+            ['@babel/plugin-transform-modules-umd', {
               exactGlobals: true,
               globals: bumble_d_config.globals_map
             }]

@@ -10,8 +10,8 @@ module Sprockets
         @globals_map = {}.freeze
         @transform_to_umd = true
         @babel_options = {
-          presets: ['es2015'],
-          plugins: ['external-helpers']
+          presets: ['@babel/preset-env'],
+          plugins: ['@babel/plugin-external-helpers']
         }
       end
 

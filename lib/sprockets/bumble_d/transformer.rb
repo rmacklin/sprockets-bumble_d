@@ -8,7 +8,7 @@ module Sprockets
   module BumbleD
     class Transformer
       class BabelBridge < Schmooze::Base
-        dependencies babel: 'babel-core'
+        dependencies babel: '@babel/core'
 
         method :resolvePlugin, 'babel.resolvePlugin'
         method :resolvePreset, 'babel.resolvePreset'
@@ -53,7 +53,6 @@ module Sprockets
           options = {
             moduleIds: true,
             sourceRoot: input[:load_path],
-            moduleRoot: nil,
             filename: input[:filename],
             filenameRelative: filename_relative,
             ast: false
@@ -61,7 +60,7 @@ module Sprockets
 
           if options[:moduleIds] && options[:moduleRoot]
             options[:moduleId] ||= File.join(options[:moduleRoot], input[:name])
-          elsif options[:moduleIds]
+          elsif options[:moduleIds] && input[:name] && !input[:name].empty?
             options[:moduleId] ||= input[:name]
           end
 

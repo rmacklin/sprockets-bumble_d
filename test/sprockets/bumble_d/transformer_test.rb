@@ -10,7 +10,7 @@ module Sprockets
       def test_it_compiles_es6_features_to_es5
         input = input_exemplar
 
-        es6_transformer = new_transformer(presets: ['es2015'])
+        es6_transformer = new_transformer(presets: ['@babel/preset-env'])
 
         expected = <<-JS.strip
 "use strict";
@@ -39,10 +39,10 @@ export default 42;
         )
 
         babel_options = {
-          presets: ['es2015'],
+          presets: ['@babel/preset-env'],
           plugins: [
-            'external-helpers',
-            ['transform-es2015-modules-umd', {
+            '@babel/plugin-external-helpers',
+            ['@babel/plugin-transform-modules-umd', {
               exactGlobals: true,
               globals: {
                 'foo/module' => 'Foo',
@@ -58,9 +58,9 @@ export default 42;
         expected = <<-JS.strip
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], factory);
+    define("some/dir/mod", ["exports", "foo/module", "bar/module"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('foo/module'), require('bar/module'));
+    factory(exports, require("foo/module"), require("bar/module"));
   } else {
     var mod = {
       exports: {}
@@ -68,18 +68,17 @@ export default 42;
     factory(mod.exports, global.Foo, global.BAR);
     global.Baz = mod.exports;
   }
-})(this, function (exports, _module, _module3) {
-  'use strict';
+})(this, function (_exports, _module, _module2) {
+  "use strict";
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-
-  var _module2 = babelHelpers.interopRequireDefault(_module);
-
-  var _module4 = babelHelpers.interopRequireDefault(_module3);
-
-  exports.default = 42;
+  _exports.default = void 0;
+  _module = babelHelpers.interopRequireDefault(_module);
+  _module2 = babelHelpers.interopRequireDefault(_module2);
+  var _default = 42;
+  _exports.default = _default;
 });
         JS
 
@@ -101,10 +100,10 @@ export default 42;
         )
 
         babel_options = {
-          presets: ['es2015'],
+          presets: ['@babel/preset-env'],
           plugins: [
-            'external-helpers',
-            ['transform-es2015-modules-umd', {
+            '@babel/plugin-external-helpers',
+            ['@babel/plugin-transform-modules-umd', {
               exactGlobals: true,
               globals: {
                 'foo/ui/tooltip/module' => 'Foo.ui.Tooltip',
@@ -119,9 +118,9 @@ export default 42;
         expected = <<-JS.strip
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define('some/dir/mod', ['exports', 'foo/ui/tooltip/module'], factory);
+    define("some/dir/mod", ["exports", "foo/ui/tooltip/module"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('foo/ui/tooltip/module'));
+    factory(exports, require("foo/ui/tooltip/module"));
   } else {
     var mod = {
       exports: {}
@@ -131,16 +130,16 @@ export default 42;
     global.Bar.ui = global.Bar.ui || {};
     global.Bar.ui.Modal = mod.exports;
   }
-})(this, function (exports, _module) {
-  'use strict';
+})(this, function (_exports, _module) {
+  "use strict";
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-
-  var _module2 = babelHelpers.interopRequireDefault(_module);
-
-  exports.default = 42;
+  _exports.default = void 0;
+  _module = babelHelpers.interopRequireDefault(_module);
+  var _default = 42;
+  _exports.default = _default;
 });
         JS
 
@@ -163,28 +162,27 @@ export default 42;
         )
 
         babel_options = {
-          presets: ['es2015'],
+          presets: ['@babel/preset-env'],
           plugins: [
-            'external-helpers',
-            'transform-es2015-modules-amd'
+            '@babel/plugin-external-helpers',
+            '@babel/plugin-transform-modules-amd'
           ]
         }
 
         es6_transformer = new_transformer(babel_options)
 
         expected = <<-JS.strip
-define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (exports, _module, _module3) {
-  'use strict';
+define("some/dir/mod", ["exports", "foo/module", "bar/module"], function (_exports, _module, _module2) {
+  "use strict";
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-
-  var _module2 = babelHelpers.interopRequireDefault(_module);
-
-  var _module4 = babelHelpers.interopRequireDefault(_module3);
-
-  exports.default = 42;
+  _exports.default = void 0;
+  _module = babelHelpers.interopRequireDefault(_module);
+  _module2 = babelHelpers.interopRequireDefault(_module2);
+  var _default = 42;
+  _exports.default = _default;
 });
         JS
 
@@ -204,11 +202,11 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
       end
 
       def test_cache_key
-        cache_key = new_transformer(presets: ['es2015']).cache_key
-        same_opts_transformer = new_transformer(presets: ['es2015'])
+        cache_key = new_transformer(presets: ['@babel/preset-env']).cache_key
+        same_opts_transformer = new_transformer(presets: ['@babel/preset-env'])
         assert_equal cache_key, same_opts_transformer.cache_key
 
-        other_opts_transformer = new_transformer(presets: ['es2016'])
+        other_opts_transformer = new_transformer(presets: ['@babel/preset-react'])
         refute_equal cache_key, other_opts_transformer.cache_key
 
         higher_version_transformer = new_transformer(babel_config_version: 2)
@@ -218,7 +216,7 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
       def test_cache_key_from_input
         input = input_exemplar
 
-        transformer_options = { presets: ['es2015'] }
+        transformer_options = { presets: ['@babel/preset-env'] }
         transformer = new_transformer(transformer_options)
 
         cache_key = transformer.cache_key_from_input(input)
@@ -238,7 +236,7 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
         assert_equal cache_key, cache_key_from_same_transformer_opts
 
         cache_key_from_other_transformer_opts =
-          new_transformer(presets: ['es2016']).cache_key_from_input(input)
+          new_transformer(presets: ['@babel/preset-react']).cache_key_from_input(input)
         refute_equal cache_key, cache_key_from_other_transformer_opts
 
         cache_key_from_higher_version =
@@ -249,7 +247,7 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
       def test_cache_works
         input = input_exemplar
 
-        presets = ['es2015']
+        presets = ['@babel/preset-env']
         transformer = new_transformer(presets: presets)
         transformer.expects(:cache_key_from_input).with(input).returns('cache_key').twice
 
@@ -273,7 +271,7 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
         resolver = Resolver.new(Transformer::BabelBridge.new(File.expand_path(__dir__)))
         Resolver.expects(:new).never
 
-        transformer = new_transformer(presets: ['es2015'])
+        transformer = new_transformer(presets: ['@babel/preset-env'])
 
         Resolver.expects(:new).returns(resolver).once
 
@@ -290,11 +288,7 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
         transformer = new_transformer(plugins: plugins)
         transformer.call(input)
 
-        plugins = 'external-helpers'
-        transformer = new_transformer(plugins: plugins)
-        transformer.call(input)
-
-        plugins = ['external-helpers']
+        plugins = ['@babel/plugin-external-helpers']
         transformer = new_transformer(plugins: plugins)
 
         Resolver.any_instance.expects(:resolve_plugins).with(plugins).once
@@ -313,11 +307,7 @@ define('some/dir/mod', ['exports', 'foo/module', 'bar/module'], function (export
         transformer = new_transformer(presets: presets)
         transformer.call(input)
 
-        presets = 'es2015'
-        transformer = new_transformer(presets: presets)
-        transformer.call(input)
-
-        presets = ['es2015']
+        presets = ['@babel/preset-env']
         transformer = new_transformer(presets: presets)
 
         Resolver.any_instance.expects(:resolve_presets).with(presets).once

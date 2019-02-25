@@ -7,7 +7,7 @@ class AssetCompilationTest < Minitest::Test
     assert_equal EXPECTED_OUTPUT, File.read(compiled_main_js_file)
   end
 
-  MAIN_JS_DIGEST = '2a32fe576c8f03a4e216ace40a4d865ffc4d261b34db852cb5d7e8cc115b4b78'
+  MAIN_JS_DIGEST = 'e4c5718ffe99c510d5bafab365ef312e5e65617f0317d2e62507e3420eebecfa'
   EXPECTED_OUTPUT = <<-JS
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
@@ -22,17 +22,20 @@ class AssetCompilationTest < Minitest::Test
     global.TestEngine = global.TestEngine || {};
     global.TestEngine.Qux = mod.exports;
   }
-})(this, function (exports) {
+})(this, function (_exports) {
   "use strict";
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
   });
+  _exports.default = void 0;
+
   function Qux(config) {
     this.config = config;
   }
 
-  exports.default = Qux;
+  var _default = Qux;
+  _exports.default = _default;
 });
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
@@ -46,23 +49,26 @@ class AssetCompilationTest < Minitest::Test
     factory(mod.exports);
     global.Foo = mod.exports;
   }
-})(this, function (exports) {
+})(this, function (_exports) {
   "use strict";
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
   });
+  _exports.default = void 0;
+
   function Foo() {
     this.number = 42;
   }
 
-  exports.default = Foo;
+  var _default = Foo;
+  _exports.default = _default;
 });
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define('bar', ['exports', 'foo'], factory);
+    define("bar", ["exports", "foo"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('foo'));
+    factory(exports, require("foo"));
   } else {
     var mod = {
       exports: {}
@@ -70,20 +76,21 @@ class AssetCompilationTest < Minitest::Test
     factory(mod.exports, global.Foo);
     global.Bar = mod.exports;
   }
-})(this, function (exports, _foo) {
-  'use strict';
+})(this, function (_exports, _foo) {
+  "use strict";
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-
-  var _foo2 = babelHelpers.interopRequireDefault(_foo);
+  _exports.default = void 0;
+  _foo = babelHelpers.interopRequireDefault(_foo);
 
   function Bar() {
-    this.foo = new _foo2.default();
+    this.foo = new _foo.default();
   }
 
-  exports.default = Bar;
+  var _default = Bar;
+  _exports.default = _default;
 });
 
 
