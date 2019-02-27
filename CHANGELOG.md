@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+Upgrade to support babel 7. If you need to use babel 6, you can still use Sprockets::BumbleD version 1.1
+
 ## 1.1.0
 
 Defer execution of babel plugin and preset resolution until the first time `Transformer#call` is invoked.
