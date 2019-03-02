@@ -5,11 +5,13 @@ module Sprockets
     class Config
       attr_accessor :babel_config_version,
                     :babel_options,
+                    :file_extension,
                     :root_dir,
                     :transform_to_umd
       attr_reader :globals_map
 
       def initialize
+        @file_extension = '.es6'
         @globals_map = {}.freeze
         @transform_to_umd = true
         @babel_options = {

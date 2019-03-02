@@ -22,9 +22,10 @@ that is compatible with non-converted code (e.g. existing UMD modules and
 plain old global-dependent scripts).
 
 Sprockets::BumbleD provides this with a Sprockets transformer that acts on
-`.es6` files. These files are transpiled by Babel and the
-[ES2015 -> UMD modules transform] plugin, preserving any globals that you've
-[registered](#registering-globals).
+`.es6` files (this file extension is
+[configurable](#customizing-the-file-extension)). These files are transpiled by
+Babel and the [ES2015 -> UMD modules transform] plugin, preserving any globals
+that you've [registered](#registering-globals).
 
 [ES2015 -> UMD modules transform]: https://github.com/babel/babel/tree/v7.3.4/packages/babel-plugin-transform-modules-umd
 
@@ -94,6 +95,17 @@ end
 ```
 
 You can specify any options that are allowed in a `.babelrc` file.
+
+### Customizing the file extension
+
+By default the Sprockets transformer is registered to act on `.es6` files. This
+is configurable:
+```ruby
+configure_sprockets_bumble_d do |config|
+  config.babel_config_version = 1
+  config.file_extension = '.babel'
+end
+```
 
 ### The `babel_config_version` setting
 

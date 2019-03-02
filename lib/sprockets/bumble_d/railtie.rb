@@ -35,7 +35,7 @@ module Sprockets
         # in the precompile list will get unnecessarily compiled. See
         # https://github.com/rails/sprockets/issues/384
         Sprockets.register_engine(
-          '.es6',
+          bumble_d_config.file_extension,
           babel_transformer,
           mime_type: 'application/javascript',
           silence_deprecation: true
