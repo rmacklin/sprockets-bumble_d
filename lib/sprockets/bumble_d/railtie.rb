@@ -28,7 +28,7 @@ module Sprockets
           root_dir: root_dir,
           babel_config_version: babel_config_version
         )
-        es6_transformer = Transformer.new(options)
+        babel_transformer = Transformer.new(options)
 
         # Using the deprecated register_engine rather than register_mime_type
         # and register_transformer because otherwise .es6 files that aren't
@@ -36,7 +36,7 @@ module Sprockets
         # https://github.com/rails/sprockets/issues/384
         Sprockets.register_engine(
           '.es6',
-          es6_transformer,
+          babel_transformer,
           mime_type: 'application/javascript',
           silence_deprecation: true
         )
