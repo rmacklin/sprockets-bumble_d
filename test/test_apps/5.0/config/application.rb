@@ -19,7 +19,6 @@ module TestApp
     # -- all .rb files in that directory are automatically loaded.
 
     configure_sprockets_bumble_d do |config|
-      config.root_dir = File.expand_path('..', __dir__)
       config.babel_config_version = 1
     end
 

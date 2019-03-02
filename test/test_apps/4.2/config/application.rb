@@ -27,7 +27,6 @@ module TestApp
     # config.i18n.default_locale = :de
 
     configure_sprockets_bumble_d do |config|
-      config.root_dir = File.expand_path('..', __dir__)
       config.babel_config_version = 1
     end
 

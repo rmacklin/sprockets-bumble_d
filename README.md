@@ -55,16 +55,32 @@ In `config/application.rb`:
 extend Sprockets::BumbleD::DSL
 
 configure_sprockets_bumble_d do |config|
+  config.babel_config_version = 1
+end
+```
+
+If you are not using Rails, you must also configure the `root_dir` (see below).
+
+### Customizing the `root_dir`
+
+Sprockets::BumbleD needs to know the directory from which node modules are to
+be resolved (typically, wherever your `package.json` resides). If you're using
+Rails, this defaults to `Rails.root.to_s`. If you are not using Rails, or if
+your node_modules folder is not inside `Rails.root`, you **must** configure the
+`root_dir` setting! For example, if you are configuring Sprockets::BumbleD in
+the file `config/application.rb` and your `package.json` is located in the
+parent directory, use:
+
+```ruby
+configure_sprockets_bumble_d do |config|
   config.root_dir = File.expand_path('..', __dir__)
   config.babel_config_version = 1
 end
 ```
 
-The `root_dir` setting is **required**! This tells Sprockets::BumbleD the
-directory from which node modules are to be resolved (typically, wherever your
-package.json resides). If that's `Rails.root.to_s`, use that. If it's in a
-specific subdirectory, specify that. Sprockets::BumbleD doesn't care, as long
-as its node `require` statements will resolve from that directory.
+If it's in a specific subdirectory, specify that directory instead.
+Sprockets::BumbleD doesn't care, as long as its node `require` statements will
+resolve from that directory.
 
 ### Customizing your babel options
 
@@ -85,7 +101,6 @@ plugin does not need to be specified when you override the default plugins.
 For example:
 ```ruby
 configure_sprockets_bumble_d do |config|
-  config.root_dir = File.expand_path('..', __dir__)
   config.babel_config_version = 2
   config.babel_options = {
     presets: ['@babel/preset-env', '@babel/preset-react'],

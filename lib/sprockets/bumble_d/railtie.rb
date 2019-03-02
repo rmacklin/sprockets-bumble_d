@@ -6,6 +6,7 @@ module Sprockets
     class Railtie < ::Rails::Railtie
       config.before_configuration do
         config.sprockets_bumble_d = Config.new
+        config.sprockets_bumble_d.root_dir = ::Rails.root.to_s
       end
 
       initializer 'sprockets-bumble_d.configure_transformer' do |app|
