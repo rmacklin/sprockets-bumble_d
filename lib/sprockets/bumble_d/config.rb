@@ -3,8 +3,8 @@ require 'sprockets/bumble_d/errors'
 module Sprockets
   module BumbleD
     class Config
-      attr_accessor :babel_options,
-                    :babel_config_version,
+      attr_accessor :babel_config_version,
+                    :babel_options,
                     :root_dir,
                     :transform_to_umd
       attr_reader :globals_map
