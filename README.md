@@ -1,28 +1,43 @@
 # Sprockets::BumbleD
 
-[Babel](https://babeljs.io) + [UMD](https://github.com/umdjs/umd) = BumbleD.
-Incrementally migrate your Sprockets-powered javascript to ES6 modules by
-[transforming](https://en.wikipedia.org/wiki/Bumblebee_(Transformers)) them
-to UMD modules that preserve your existing global references.
+This gem provides a plugin for [Sprockets] that enables you to transpile modern
+javascript using [Babel].
+
+A primary use case for this gem is to allow you to incrementally migrate your
+Sprockets-powered javascript codebase to ES6 modules by [transforming] them to
+[UMD] modules that preserve your existing global variable references (hence the
+name: Babel + UMD = BumbleD). Once an entire subtree of your javascript module
+tree is written in ES6 modules, this frees you up to bundle that javascript
+using a more modern tool (e.g. [rollup] or [webpack]).
+
+That said, this gem can be used for general purpose babel transpilation within
+the Sprockets pipeline.
+
+[Babel]: https://babeljs.io
+[rollup]: https://rollupjs.org
+[Sprockets]: https://github.com/rails/sprockets
+[transforming]: https://en.wikipedia.org/wiki/Bumblebee_(Transformers)
+[UMD]: https://github.com/umdjs/umd
+[webpack]: https://webpack.js.org/
 
 ## Background
 
-ES6 modules are the future. The syntax is great: it's concise and
+ES6 modules are the new standard. The syntax is great: it's concise and
 straightforward, and the static and explicit nature of `import` and `export`
 statements make your code a complete spec of its dependencies and how to
 resolve them. This means that moving to ES6 modules also makes moving away
 from Sprockets `//= require` directives for javascript bundling (and Sprockets
 in general) much easier.
 
-But when faced with a large codebase, it's not feasible to convert everything
-to ES6 modules at once. Thus, the goal is to be able to convert
-module-by-module from explicitly exporting a global (and depending on other
-globals) to following the ES6 module format, which we'll then transpile to UMD
-that is compatible with non-converted code (e.g. existing UMD modules and
-plain old global-dependent scripts).
+But when faced with a large legacy codebase, it's not feasible to convert
+everything to ES6 modules at once. Thus, the goal is to be able to convert
+module-by-module from explicitly exporting a global variable (and depending on
+other modules' global variables) to following the ES6 module format, which we'll
+then transpile to UMD that is compatible with non-converted code (e.g. existing
+UMD modules and plain old global-dependent scripts).
 
-Sprockets::BumbleD provides this with a Sprockets transformer that acts on
-`.es6` files (this file extension is
+Sprockets::BumbleD accomplishes this goal by providing a Sprockets transformer
+that acts on `.es6` files (this file extension is
 [configurable](#customizing-the-file-extension)). These files are transpiled by
 Babel and the [ES2015 -> UMD modules transform] plugin, preserving any globals
 that you've [registered](#registering-globals).
@@ -89,7 +104,7 @@ By default you get [@babel/preset-env], [@babel/plugin-external-helpers], and
 different plugins and presets, specify them in the
 `configure_sprockets_bumble_d` block with the `babel_options` setting. Note
 that (because it's central to the purpose of this gem)
-@babel/plugin-transform-modules-umd is _always_ included for you (unless
+@babel/plugin-transform-modules-umd is included for you (unless
 you [set `transform_to_umd` to `false`](#do-i-have-to-transpile-to-umd-modules))
 and configured to use the [registered globals](#registering-globals), so this
 plugin does not need to be specified when you override the default plugins.
@@ -256,11 +271,11 @@ demonstrates this in a full application.
 ## Similar projects
 
 - [babel-schmooze-sprockets] - This takes a similar approach, but it requires
-  sprockets 4 (which is still in beta), and it doesn't offer a way to register
+  Sprockets 4 (which is still in beta), and it doesn't offer a way to register
   globals within inline engines. Additionally, it diverges in
   [philosophy](#philosophy) by vendoring some node_modules.
-- [sprockets-es6] - This has been the common solution for ES6 transpilation in
-  sprockets for a while, but it takes a very different approach. Instead of
+- [sprockets-es6] - This was the common solution for ES6 transpilation within
+  Sprockets for a while, but it takes a very different approach. Instead of
   relying on node and the npm ecosystem, it uses [ruby-babel-transpiler], which
   is stuck on babel 5. This means you cannot configure custom babel plugins
   (which means you can't use `exactGlobals` to specify what it should transform
