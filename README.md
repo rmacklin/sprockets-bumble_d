@@ -148,9 +148,9 @@ gem. This is what the `root_dir` config is for. It's also why the
 you specify exactly how to transpile any import statements into the global
 reference it should resolve to. It also lets you specify what global should be
 exported by an ES6 module in the resultant UMD output. (A complete description
-is available in [babel PR #3534]).
+is available in [babel PR #3534].)
 
-[babel PR #3534]: (https://github.com/babel/babel/pull/3534)
+[babel PR #3534]: https://github.com/babel/babel/pull/3534
 
 In `config/application.rb`, after `extend Sprockets::BumbleD::DSL`:
 ```ruby
