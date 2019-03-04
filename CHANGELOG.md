@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+Default the `root_dir` setting to `Rails.root.to_s` in Rails applications
+
+Make the sprockets transformer extension configurable
+
 ## 2.0.0
 
 Upgrade to support babel 7. If you need to use babel 6, you can still use Sprockets::BumbleD version 1.1
