@@ -8,12 +8,19 @@ Gem::Specification.new do |spec|
   spec.version       = Sprockets::BumbleD::VERSION
   spec.authors       = ['Richard Macklin']
 
-  spec.summary     = 'Let Sprockets use Babel to transpile ES6 modules to UMD'
+  spec.summary     = 'Let Sprockets use Babel to transpile modern javascript'
   spec.description = <<-EOF
-    Babel + UMD = BumbleD
-    Facilitate incremental migration of a large Sprockets-powered javascript
-    codebase to ES6 modules by transforming them to UMD modules that preserve
-    your existing global references.
+    This gem provides a plugin for Sprockets to transpile modern javascript
+    using Babel.
+
+    Unlike other options in the sprockets ecosystem, it works with the latest
+    version of Babel and any plugins/presets you install.
+
+    A primary use case for this gem is to facilitate incremental migration of a
+    large Sprockets-powered javascript codebase to ES6 modules by transforming
+    them to UMD modules that preserve your existing global variable references
+    (hence the name: Babel + UMD = BumbleD). That said, this gem can be used for
+    general purpose babel transpilation within the Sprockets pipeline.
   EOF
   spec.homepage    = 'https://github.com/rmacklin/sprockets-bumble_d'
   spec.license     = 'MIT'
