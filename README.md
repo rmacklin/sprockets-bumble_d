@@ -3,12 +3,12 @@
 This gem provides a plugin for [Sprockets] that enables you to transpile modern
 javascript using [Babel].
 
-A primary use case for this gem is to allow you to incrementally migrate your
-Sprockets-powered javascript codebase to ES6 modules by [transforming] them to
-[UMD] modules that preserve your existing global variable references (hence the
-name: Babel + UMD = BumbleD). Once an entire subtree of your javascript module
-tree is written in ES6 modules, this frees you up to bundle that javascript
-using a more modern tool (e.g. [rollup] or [webpack]).
+A primary use case for this gem is to incrementally migrate your
+Sprockets-powered javascript codebase to ES6 modules. This works by
+[transforming] them to [UMD] modules that preserve your existing global variable
+references (hence the name: Babel + UMD = BumbleD). Once an entire subtree of
+your javascript module tree is written in ES6 modules, this frees you up to
+bundle that javascript using a more modern tool (e.g. [rollup] or [webpack]).
 
 That said, this gem can be used for general purpose babel transpilation within
 the Sprockets pipeline.
