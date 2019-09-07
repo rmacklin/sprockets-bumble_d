@@ -7,3 +7,5 @@ gem 'rails', '~> 6.0.0'
 gem 'puma', '~> 3.11'
 
 gem 'sprockets-bumble_d', :path => '../../..'
+
+gem 'test_engine', path: '../test_engine'
