@@ -25,5 +25,9 @@ module TestApp
     configure_sprockets_bumble_d do |config|
       config.babel_config_version = 1
     end
+
+    register_umd_globals :test_app,
+      'bar' => 'Bar',
+      'foo' => 'Foo'
   end
 end
