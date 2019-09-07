@@ -7,7 +7,7 @@ class AssetCompilationTest < Minitest::Test
     assert_equal EXPECTED_OUTPUT, File.read(compiled_main_js_file)
   end
 
-  MAIN_JS_DIGEST = 'e4c5718ffe99c510d5bafab365ef312e5e65617f0317d2e62507e3420eebecfa'
+  MAIN_JS_DIGEST = 'ee34d61b788e9ba78a3b2e2747d24fe2e20b0e189442559b75cb2b496cccd16d'
   EXPECTED_OUTPUT = <<-JS
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
@@ -28,14 +28,14 @@ class AssetCompilationTest < Minitest::Test
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = void 0;
+  _exports["default"] = void 0;
 
   function Qux(config) {
     this.config = config;
   }
 
   var _default = Qux;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
@@ -55,14 +55,14 @@ class AssetCompilationTest < Minitest::Test
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = void 0;
+  _exports["default"] = void 0;
 
   function Foo() {
     this.number = 42;
   }
 
   var _default = Foo;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
@@ -82,15 +82,15 @@ class AssetCompilationTest < Minitest::Test
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = void 0;
+  _exports["default"] = void 0;
   _foo = babelHelpers.interopRequireDefault(_foo);
 
   function Bar() {
-    this.foo = new _foo.default();
+    this.foo = new _foo["default"]();
   }
 
   var _default = Bar;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
 
 

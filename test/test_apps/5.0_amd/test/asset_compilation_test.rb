@@ -7,7 +7,7 @@ class AssetCompilationTest < Minitest::Test
     assert_equal EXPECTED_OUTPUT, File.read(compiled_main_js_file)
   end
 
-  MAIN_JS_DIGEST = '28d1277a0eefc149dba33a55c8c8c507d808a1a7cd7efc30d49c56a891b66cf1'
+  MAIN_JS_DIGEST = 'f4b4c2aa0b687f7aa0fb7e430800b58a3b646bf1301763fd9b1116deb0c7e278'
   EXPECTED_OUTPUT = <<-JS
 define("test_engine/qux", ["exports"], function (_exports) {
   "use strict";
@@ -15,14 +15,14 @@ define("test_engine/qux", ["exports"], function (_exports) {
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = void 0;
+  _exports["default"] = void 0;
 
   function Qux(config) {
     this.config = config;
   }
 
   var _default = Qux;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
 define("foo", ["exports"], function (_exports) {
   "use strict";
@@ -30,14 +30,14 @@ define("foo", ["exports"], function (_exports) {
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = void 0;
+  _exports["default"] = void 0;
 
   function Foo() {
     this.number = 42;
   }
 
   var _default = Foo;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
 define("bar", ["exports", "foo"], function (_exports, _foo) {
   "use strict";
@@ -45,15 +45,15 @@ define("bar", ["exports", "foo"], function (_exports, _foo) {
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = void 0;
+  _exports["default"] = void 0;
   _foo = babelHelpers.interopRequireDefault(_foo);
 
   function Bar() {
-    this.foo = new _foo.default();
+    this.foo = new _foo["default"]();
   }
 
   var _default = Bar;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
 
 
