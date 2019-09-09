@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0
+
+Support rails 6
+
 ## 2.1.0
 
 Default the `root_dir` setting to `Rails.root.to_s` in Rails applications
