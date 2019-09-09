@@ -74,11 +74,11 @@ export default 42;
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = void 0;
+  _exports["default"] = void 0;
   _module = babelHelpers.interopRequireDefault(_module);
   _module2 = babelHelpers.interopRequireDefault(_module2);
   var _default = 42;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
         JS
 
@@ -136,10 +136,10 @@ export default 42;
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = void 0;
+  _exports["default"] = void 0;
   _module = babelHelpers.interopRequireDefault(_module);
   var _default = 42;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
         JS
 
@@ -178,11 +178,11 @@ define("some/dir/mod", ["exports", "foo/module", "bar/module"], function (_expor
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = void 0;
+  _exports["default"] = void 0;
   _module = babelHelpers.interopRequireDefault(_module);
   _module2 = babelHelpers.interopRequireDefault(_module2);
   var _default = 42;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
         JS
 

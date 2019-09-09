@@ -1,0 +1,1 @@
+../../shared/test/asset_compilation_test.rb
