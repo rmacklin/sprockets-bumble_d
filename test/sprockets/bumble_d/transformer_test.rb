@@ -68,7 +68,7 @@ export default 42;
     factory(mod.exports, global.Foo, global.BAR);
     global.Baz = mod.exports;
   }
-})(this, function (_exports, _module, _module2) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _module, _module2) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -130,7 +130,7 @@ export default 42;
     global.Bar.ui = global.Bar.ui || {};
     global.Bar.ui.Modal = mod.exports;
   }
-})(this, function (_exports, _module) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _module) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {

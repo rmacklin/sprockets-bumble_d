@@ -7,7 +7,7 @@ class AssetCompilationTest < Minitest::Test
     assert_equal EXPECTED_OUTPUT, File.read(compiled_main_js_file)
   end
 
-  MAIN_JS_DIGEST = 'ee34d61b788e9ba78a3b2e2747d24fe2e20b0e189442559b75cb2b496cccd16d'
+  MAIN_JS_DIGEST = 'c748dc176033cb7a56e343791b3ec89505959b9754d11dfe3500302756acebc6'
   EXPECTED_OUTPUT = <<-JS
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
@@ -22,7 +22,7 @@ class AssetCompilationTest < Minitest::Test
     global.TestEngine = global.TestEngine || {};
     global.TestEngine.Qux = mod.exports;
   }
-})(this, function (_exports) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -49,7 +49,7 @@ class AssetCompilationTest < Minitest::Test
     factory(mod.exports);
     global.Foo = mod.exports;
   }
-})(this, function (_exports) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -76,7 +76,7 @@ class AssetCompilationTest < Minitest::Test
     factory(mod.exports, global.Foo);
     global.Bar = mod.exports;
   }
-})(this, function (_exports, _foo) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _foo) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
