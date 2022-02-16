@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version:
+          - 2.5
+          - 2.6
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler: 1
+        ruby-version: ${{ matrix.ruby-version }}
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+    - run: script/cibuild
